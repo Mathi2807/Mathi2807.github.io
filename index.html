@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portafolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b1c22; --paper:#edece7;
+    --code:#4a5b8c; --design:#c65b4e; --music:#c99a2e;
+    --line:rgba(27,28,34,.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --ink:#edece7; --paper:#1b1c22; --line:rgba(237,236,231,.16); }
+  }
+  :root[data-theme="dark"]{ --ink:#edece7; --paper:#1b1c22; --line:rgba(237,236,231,.16); }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+  header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line);}
+  nav.wrap{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
+  .brand{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;text-decoration:none;user-select:none;-webkit-user-select:none;}
+  .navlinks{display:flex;gap:20px;font-size:.92rem;}
+  .navlinks a{text-decoration:none;opacity:.75;transition:opacity .15s;}
+  .navlinks a:hover{opacity:1;}
+  .hero{padding:72px 0 56px;}
+  .hero h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(2.2rem,7vw,3.6rem);line-height:1.05;max-width:14ch;}
+  .hero p{margin-top:20px;font-size:1.08rem;max-width:46ch;opacity:.82;}
+  .hero .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .tag{font-size:.82rem;padding:5px 12px;border:1px solid var(--line);border-radius:100px;}
+  .name-line{font-size:.9rem;opacity:.6;letter-spacing:.02em;margin-bottom:6px;}
+  .hero-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .hero-btn{font-size:.88rem;padding:9px 18px;border:1px solid var(--line);border-radius:100px;text-decoration:none;transition:background .15s,color .15s;}
+  .hero-btn:hover{background:var(--ink);color:var(--paper);}
+  .skill-tier{margin-bottom:18px;}
+  .skill-tier h4{font-size:.85rem;font-weight:600;opacity:.75;margin-bottom:8px;}
+  .skill-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{font-size:.82rem;padding:5px 12px;border:1px solid var(--line);border-radius:100px;}
+  section.cat{padding:52px 0;border-top:1px solid var(--line);}
+  .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:26px;}
+  .cat-head .left{display:flex;align-items:baseline;gap:12px;}
+  .cat-head .dot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .cat-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;}
+  .cat-head span.sub{font-size:.85rem;opacity:.6;}
+  .grid{display:grid;gap:14px;grid-template-columns:1fr 1fr;}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+  .card{border:1px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:8px;min-height:120px;position:relative;}
+  .card h3{font-size:1.02rem;font-weight:600;}
+  .card p{font-size:.9rem;opacity:.75;}
+  .card .meta{font-size:.78rem;opacity:.55;margin-top:auto;}
+  #code .card{border-left:3px solid var(--code);}
+  #design .card{border-left:3px solid var(--design);}
+  #music .card{border-left:3px solid var(--music);}
+  #other .card{border-left:3px solid var(--ink);}
+  .music-row{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:6px;padding:12px 16px;position:relative;}
+  .music-row .n{font-family:'Fraunces',serif;opacity:.4;width:1.6em;}
+  .music-row .t{flex:1;}
+  .music-row .t b{display:block;font-size:.96rem;}
+  .music-row .t span{font-size:.82rem;opacity:.65;}
+  footer{padding:56px 0 64px;border-top:1px solid var(--line);}
+  footer .links{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px;font-size:.92rem;}
+  footer .links a{text-decoration:underline;text-underline-offset:3px;opacity:.8;}
+  footer .links a:hover{opacity:1;}
+  footer p.small{margin-top:28px;font-size:.8rem;opacity:.5;}
+
+  /* --- edit mode --- */
+  .editable{outline-offset:2px;}
+  body.editing .editable{outline:1px dashed transparent;border-radius:3px;}
+  body.editing .editable:focus{outline:1px dashed var(--code);background:rgba(74,91,140,.06);}
+  .edit-only{display:none;}
+  body.editing .edit-only{display:inline-flex;}
+  .add-card,.rm-card{border:1px dashed var(--line);background:transparent;color:var(--ink);
+    cursor:pointer;font-family:inherit;font-size:.8rem;border-radius:6px;}
+  .add-card{padding:10px 14px;opacity:.6;align-items:center;justify-content:center;min-height:120px;width:100%;}
+  .add-card:hover{opacity:1;}
+  .rm-card{position:absolute;top:8px;right:8px;width:22px;height:22px;padding:0;line-height:1;opacity:.5;}
+  .rm-card:hover{opacity:1;color:#b03636;border-color:#b03636;}
+  .add-row{margin-top:10px;}
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;gap:10px;justify-content:center;
+    padding:14px calc(14px + env(safe-area-inset-bottom,0px)) 14px 14px;background:var(--paper);border-top:1px solid var(--line);}
+  body.editing .bar{display:flex;}
+  .bar button{font-family:inherit;font-size:.88rem;padding:10px 18px;border-radius:100px;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);}
+  .bar button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal{background:var(--paper);color:var(--ink);border-radius:10px;padding:28px;max-width:340px;width:100%;border:1px solid var(--line);}
+  .modal h3{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:6px;}
+  .modal p.hint{font-size:.85rem;opacity:.65;margin-bottom:16px;}
+  .modal input{width:100%;padding:10px 12px;margin-bottom:10px;border:1px solid var(--line);border-radius:6px;
+    background:transparent;color:var(--ink);font-family:inherit;font-size:.92rem;}
+  .modal .row{display:flex;gap:8px;margin-top:14px;}
+  .modal button{flex:1;padding:10px;border-radius:6px;border:1px solid var(--line);background:transparent;color:var(--ink);font-family:inherit;cursor:pointer;}
+  .modal button.primary{background:var(--ink);color:var(--paper);}
+  .modal .err{font-size:.82rem;color:#b03636;min-height:1.2em;margin-top:2px;}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);
+    padding:10px 18px;border-radius:100px;font-size:.85rem;z-index:200;opacity:0;transition:opacity .25s;pointer-events:none;}
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top" id="brandBtn">Mathías Pérez</a>
+    <div class="navlinks" style="flex-wrap:wrap;row-gap:6px;">
+      <a href="#about">Sobre mí</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#habilidades">Habilidades</a>
+      <a href="#certificaciones">Certificaciones</a>
+      <a href="#cv">CV</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap" id="top">
+
+  <section class="hero">
+    <p class="name-line editable" contenteditable="false">Mathías J. Pérez Pérez</p>
+    <h1 class="editable" contenteditable="false">Desarrollo software, diseño experiencias visuales y produzco música.</h1>
+    <p class="editable" contenteditable="false">Este es mi espacio para reunir proyectos de programación, diseño visual, música y experimentos varios — todo en un solo lugar.</p>
+    <div class="hero-btns">
+      <a class="hero-btn" href="#proyectos">Proyectos</a>
+      <a class="hero-btn" href="#habilidades">Habilidades</a>
+      <a class="hero-btn" href="#cv">CV</a>
+      <a class="hero-btn" href="#contacto">Contacto</a>
+    </div>
+  </section>
+
+  <section class="cat" id="about">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--code)"></span><h2>Sobre mí</h2></div></div>
+    <p class="editable" contenteditable="false">Me interesa la tecnología y la creación digital: música, diseño y contenido, además del inglés. De a poco voy sumando programación y finanzas a lo que quiero aprender más adelante.</p>
+  </section>
+
+  <section class="section-title" id="proyectos" style="padding:52px 0 0;">
+    <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:1.7rem;">Proyectos</h2>
+    <p style="opacity:.65;font-size:.9rem;margin-top:6px;">Sección reservada para agregar los proyectos.</p>
+  </section>
+  <section class="cat" id="code">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--code)"></span><h2>Código</h2><span class="sub">proyectos de desarrollo</span></div></div>
+    <div class="grid" data-cat="code">
+      <div class="card">
+        <button class="rm-card edit-only" aria-label="Eliminar">×</button>
+        <h3 class="editable" contenteditable="false">Nombre del proyecto</h3>
+        <p class="editable" contenteditable="false">Breve descripción: qué hace, con qué lo construiste.</p>
+        <span class="meta editable" contenteditable="false">JavaScript · repo / demo</span>
+      </div>
+    </div>
+    <button class="add-card edit-only" data-target="code">+ Agregar proyecto</button>
+  </section>
+
+  <section class="cat" id="design">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--design)"></span><h2>Diseño</h2><span class="sub">identidad visual, UI, ilustración</span></div></div>
+    <div class="grid" data-cat="design">
+      <div class="card">
+        <button class="rm-card edit-only" aria-label="Eliminar">×</button>
+        <h3 class="editable" contenteditable="false">Nombre del proyecto</h3>
+        <p class="editable" contenteditable="false">Qué es y para quién lo hiciste.</p>
+        <span class="meta editable" contenteditable="false">Branding · 2026</span>
+      </div>
+    </div>
+    <button class="add-card edit-only" data-target="design">+ Agregar proyecto</button>
+  </section>
+
+  <section class="cat" id="music">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--music)"></span><h2>Música</h2><span class="sub">tracks y proyectos sonoros</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:10px;" data-cat="musiclist">
+      <div class="music-row">
+        <button class="rm-card edit-only" aria-label="Eliminar">×</button>
+        <span class="n">01</span>
+        <div class="t"><b class="editable" contenteditable="false">Nombre del track</b><span class="editable" contenteditable="false">Género · duración</span></div>
+      </div>
+    </div>
+    <button class="add-card edit-only add-row" data-target="musiclist">+ Agregar track</button>
+  </section>
+
+  <section class="cat" id="other">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--ink)"></span><h2>Otros proyectos</h2><span class="sub">todo lo que no encaja en una sola categoría</span></div></div>
+    <div class="grid" data-cat="other">
+      <div class="card">
+        <button class="rm-card edit-only" aria-label="Eliminar">×</button>
+        <h3 class="editable" contenteditable="false">Nombre del proyecto</h3>
+        <p class="editable" contenteditable="false">Descripción corta.</p>
+        <span class="meta editable" contenteditable="false">2026</span>
+      </div>
+    </div>
+    <button class="add-card edit-only" data-target="other">+ Agregar proyecto</button>
+  </section>
+
+  <section class="cat" id="habilidades">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--ink)"></span><h2>Habilidades</h2></div></div>
+    <div class="skill-tier">
+      <h4>🟢 Experiencia</h4>
+      <div class="skill-chips">
+        <span class="chip editable" contenteditable="false">Comunicación</span>
+        <span class="chip editable" contenteditable="false">Herramientas digitales</span>
+      </div>
+    </div>
+    <div class="skill-tier">
+      <h4>🟡 En desarrollo</h4>
+      <div class="skill-chips">
+        <span class="chip editable" contenteditable="false">Música</span>
+        <span class="chip editable" contenteditable="false">Diseño</span>
+        <span class="chip editable" contenteditable="false">Edición/contenido</span>
+        <span class="chip editable" contenteditable="false">Inglés</span>
+        <span class="chip editable" contenteditable="false">Organización</span>
+        <span class="chip editable" contenteditable="false">Finanzas</span>
+        <span class="chip editable" contenteditable="false">Cocina</span>
+      </div>
+    </div>
+    <div class="skill-tier">
+      <h4>⚪ Futuro</h4>
+      <div class="skill-chips">
+        <span class="chip editable" contenteditable="false">Programación</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="certificaciones">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--music)"></span><h2>Certificaciones</h2><span class="sub">cursos y acreditaciones</span></div></div>
+    <div class="grid" data-cat="certs">
+      <div class="card">
+        <button class="rm-card edit-only" aria-label="Eliminar">×</button>
+        <h3 class="editable" contenteditable="false">Nombre del curso o certificación</h3>
+        <p class="editable" contenteditable="false">Institución que lo emite.</p>
+        <span class="meta editable" contenteditable="false">2026</span>
+      </div>
+    </div>
+    <button class="add-card edit-only" data-target="certs">+ Agregar certificación</button>
+  </section>
+
+  <section class="cat" id="cv">
+    <div class="cat-head"><div class="left"><span class="dot" style="background:var(--ink)"></span><h2>Currículum</h2><span class="sub">descargá el CV en PDF</span></div></div>
+    <div class="card" style="align-items:flex-start;">
+      <h3 class="editable" contenteditable="false">CV genérico — reemplazalo cuando tengas el tuyo</h3>
+      <p class="editable" contenteditable="false">PDF de ejemplo con la estructura típica: perfil, experiencia, educación, habilidades e idiomas.</p>
+      <a id="cvDownload" href="data:application/pdf;base64,JVBERi0xLjQKJZOMi54gUmVwb3J0TGFiIEdlbmVyYXRlZCBQREYgZG9jdW1lbnQgKG9wZW5zb3VyY2UpCjEgMCBvYmoKPDwKL0YxIDIgMCBSIC9GMiAzIDAgUiAvRjMgNCAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EgL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcgL05hbWUgL0YxIC9TdWJ0eXBlIC9UeXBlMSAvVHlwZSAvRm9udAo+PgplbmRvYmoKMyAwIG9iago8PAovQmFzZUZvbnQgL0hlbHZldGljYS1Cb2xkIC9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIC9OYW1lIC9GMiAvU3VidHlwZSAvVHlwZTEgL1R5cGUgL0ZvbnQKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0Jhc2VGb250IC9IZWx2ZXRpY2EtT2JsaXF1ZSAvRW5jb2RpbmcgL1dpbkFuc2lFbmNvZGluZyAvTmFtZSAvRjMgL1N1YnR5cGUgL1R5cGUxIC9UeXBlIC9Gb250Cj4+CmVuZG9iago1IDAgb2JqCjw8Ci9Db250ZW50cyA5IDAgUiAvTWVkaWFCb3ggWyAwIDAgNjEyIDc5MiBdIC9QYXJlbnQgOCAwIFIgL1Jlc291cmNlcyA8PAovRm9udCAxIDAgUiAvUHJvY1NldCBbIC9QREYgL1RleHQgL0ltYWdlQiAvSW1hZ2VDIC9JbWFnZUkgXQo+PiAvUm90YXRlIDAgL1RyYW5zIDw8Cgo+PiAKICAvVHlwZSAvUGFnZQo+PgplbmRvYmoKNiAwIG9iago8PAovUGFnZU1vZGUgL1VzZU5vbmUgL1BhZ2VzIDggMCBSIC9UeXBlIC9DYXRhbG9nCj4+CmVuZG9iago3IDAgb2JqCjw8Ci9BdXRob3IgKFwoYW5vbnltb3VzXCkpIC9DcmVhdGlvbkRhdGUgKEQ6MjAyNjA5MjUwMzQwMDErMDAnMDAnKSAvQ3JlYXRvciAoXCh1bnNwZWNpZmllZFwpKSAvS2V5d29yZHMgKCkgL01vZERhdGUgKEQ6MjAyNjA5MjUwMzQwMDErMDAnMDAnKSAvUHJvZHVjZXIgKFJlcG9ydExhYiBQREYgTGlicmFyeSAtIFwob3BlbnNvdXJjZVwpKSAKICAvU3ViamVjdCAoXCh1bnNwZWNpZmllZFwpKSAvVGl0bGUgKFwoYW5vbnltb3VzXCkpIC9UcmFwcGVkIC9GYWxzZQo+PgplbmRvYmoKOCAwIG9iago8PAovQ291bnQgMSAvS2lkcyBbIDUgMCBSIF0gL1R5cGUgL1BhZ2VzCj4+CmVuZG9iago5IDAgb2JqCjw8Ci9GaWx0ZXIgWyAvQVNDSUk4NURlY29kZSAvRmxhdGVEZWNvZGUgXSAvTGVuZ3RoIDEwNTUKPj4Kc3RyZWFtCkdiITtiZDhKXlknUmU7L2dySFlSKUdAQUlIXzMyajY+SGNSS2VVRHM/XEcwVzBvY3FuUyRyNGVIWSFrWiVVbmleSCFwIlc5PUFFJlVOPWJwKDRkI21kVSgqM15vJiVpKllCTS9BZF1fWSZBZF05VlIrLDtKMzhrUTF1SzdyI1VDWiU9STladCVVVEdkTjc0IW1bVE9NPGZKN3IsPm4xZ0tuY1xSMzpWQigrJDhjS2BXLnU0XU1ZYWJoRUBmbEdiakptNExJXzt0azpZaFdEJ1JMXCxUMkFmYEI8NWpKaUxuPnFAI0BNQCVaJCRfK3BkPmVzYFRPRig6bzo0RnI/MFo9JzQjSD8qMm5LSzwramY7XDspQ2YxKGghOnA9Uz1BTDE1LzxEWzQsNF9oQzksTnU3PiYhdSVHQjEqbzlNY1c5Oko1Klo4VGQxSDVOQGhtTGR1W0IxI2MpRTMmVjhjLHAtTjI+VjRrOGY8VDJVO1VyOCROSkJRclMmUj4mLmFxblA0OjooVGlDTW9oTl1HKWgrVU80Z1dEMV9dLztCKS8iNVFfV0pnZl5dLVA9PWUkOCxcVVQ7Qzw2cEc8ZkFmU2tvb0diN2JiTnEvQVRDQzlsQTBfKG90YnFlMEY+aDdrK10yMDZEWF1cMm1OIyEvYD1TWCo+Syk4JTVjdElDPElEQHBvIjFQI3NYYjM3OC1hYSlSQ01EMiIhRi8xYSQxVWctY24hUSddMz4zNCU/czxhclEoWiZSQT9adTMlO14waC8kK1NQXjZkKylpNTV0UmxhY1IjTkxFZmpiVkIpRF10S1NAaEE0cWZmMSlIITYzbEYjQ1wtVyxpIkUuSzJOUlxCcHVpKj1hPUg8JmgzbzFWVXIzXFJqZCQnbzQlOlk4R3BATWV0cjtBaEZSci9gIklsSjMxTTUtYDouc0NBdXFIM1IubThraEJFR1ZhZU1yRzk8NlZpcU4zU2lxOXBqSWd0InFWRU1HIjtdVkthX0FYOm4sb1d1dUI+KU5fMDkmM1dpaDkrTm48OS0zXTJUamxWQ25wV1AqU1Z1azt1UEtXMElCbF1kNVdjckFTNC9maHQ0RDFtQWNTWFVOS0t1KUNzRkI8ZCIhXkBManFGaE50KGM6Oi4+QHAzNypdZ21pNVNHN0ohdWZpcyFATic/Pk5xLik9TT9HPVxuW28zKVtwOUFpUlFlcEc9UVhBbz9sV2E4cHJqSiJIRTBWTU8+c0FoJ0ImOGNBNnMpPHE/V1ZCUk1QNC1VXFNWO0dgckRGbFtkM2pkS1BHMUVBM09BX1UsX0FBZFYrK2pPQUdHTlZrWkhIZFVdIUA6PksqXCZ1JWNdL2M6J2szOVxsN29zM2pALkpRQHFhOWkmTlBfSVEuNSNWW2pyclZsT2xMIn4+ZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgMTAKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDYxIDAwMDAwIG4gCjAwMDAwMDAxMTIgMDAwMDAgbiAKMDAwMDAwMDIxOSAwMDAwMCBuIAowMDAwMDAwMzMxIDAwMDAwIG4gCjAwMDAwMDA0NDYgMDAwMDAgbiAKMDAwMDAwMDYzOSAwMDAwMCBuIAowMDAwMDAwNzA3IDAwMDAwIG4gCjAwMDAwMDA5ODcgMDAwMDAgbiAKMDAwMDAwMTA0NiAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9JRCAKWzwwYzViZmEzODBhZjUxNmIxYmVhNTJiMTllNmJkN2ViMj48MGM1YmZhMzgwYWY1MTZiMWJlYTUyYjE5ZTZiZDdlYjI+XQolIFJlcG9ydExhYiBnZW5lcmF0ZWQgUERGIGRvY3VtZW50IC0tIGRpZ2VzdCAob3BlbnNvdXJjZSkKCi9JbmZvIDcgMCBSCi9Sb290IDYgMCBSCi9TaXplIDEwCj4+CnN0YXJ0eHJlZgoyMTkyCiUlRU9GCg==" download="CV.pdf" style="margin-top:8px;font-size:.85rem;text-decoration:underline;text-underline-offset:3px;">⬇ Descargar CV (PDF)</a>
+      <p class="edit-only" style="font-size:.78rem;opacity:.55;margin-top:6px;">Se actualiza solo: subí un PDF con el mismo nombre a tu repo de GitHub y este link va a mostrar siempre la última versión.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap" id="contacto">
+  <h2 style="font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;">Hablemos</h2>
+  <div class="links">
+    <a href="mailto:pmathias2807@gmail.com" class="editable" contenteditable="false">pmathias2807@gmail.com</a>
+    <a href="https://x.com/Mathi2807" target="_blank" rel="noopener">X (Twitter)</a>
+    <a href="https://github.com/Mathi2807" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.youtube.com/@MathisMusic28" target="_blank" rel="noopener">YouTube (música)</a>
+    <a href="https://www.youtube.com/@Mathi2807" target="_blank" rel="noopener">YouTube (personal)</a>
+    <span class="editable" contenteditable="false">Discord: math579</span>
+  </div>
+  <p class="small">Correo alternativo: mathi280713@gmail.com</p>
+</footer>
+
+<div class="bar">
+  <button id="exitBtn">Salir sin guardar</button>
+  <button id="tokenBtn" title="Borrar el token guardado en este navegador">🔑 Cambiar token</button>
+  <button id="saveBtn" class="primary">Guardar cambios</button>
+</div>
+<div class="toast" id="toast">Modo edición activado</div>
+
+<script>
+(function(){
+  var CV_URL = "https://raw.githubusercontent.com/Mathi2807/CV/main/mathias_perez.pdf";
+  var CODE_PASS = "Mathias280713$Mathi'sMusic28";
+  var CODE_PIN = "280713";
+  var CODE_ANSWER = "saiko";
+  var CODE_PET = "kira";
+
+  // --- Alojado en GitHub Pages: repo donde vive este mismo index.html ---
+  var GH_OWNER = "Mathi2807";
+  var GH_REPO = "Mathi2807.github.io"; // cambiá esto si usás otro nombre de repo
+  var GH_BRANCH = "main";
+  var GH_PATH = "index.html";
+
+  function getToken(){ try{ return localStorage.getItem('gh_token') || ''; }catch(e){ return ''; } }
+  function setToken(t){ try{ if(t){ localStorage.setItem('gh_token', t); } else { localStorage.removeItem('gh_token'); } }catch(e){} }
+
+  var cvLink = document.getElementById('cvDownload');
+  if(cvLink){ cvLink.href = CV_URL; }
+
+  var brand = document.getElementById('brandBtn');
+  var taps = 0, tapTimer = null;
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2600);
+  }
+
+  brand.addEventListener('click', function(e){
+    e.preventDefault();
+    taps++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(function(){ taps = 0; }, 1200);
+    if(taps >= 5){
+      taps = 0;
+      openAuthModal();
+    }
+  });
+
+  function openAuthModal(){
+    var bg = document.createElement('div');
+    bg.className = 'modal-bg';
+    bg.innerHTML =
+      '<div class="modal">' +
+        '<h3>¿Eres Mathías? 🗿</h3>' +
+        '<p class="hint">Vamos a comprobarlo.</p>' +
+        '<input type="password" id="authPass" placeholder="Contraseña">' +
+        '<input type="text" id="authQ" placeholder="¿Cantante favorito?">' +
+        '<input type="text" id="authPet" placeholder="¿Nombre de tu mascota?">' +
+        '<input type="text" id="authPin" placeholder="PIN">' +
+        '<div class="err" id="authErr"></div>' +
+        '<div class="row"><button id="authCancel">Cancelar</button><button class="primary" id="authOk">Entrar</button></div>' +
+      '</div>';
+    document.body.appendChild(bg);
+    document.getElementById('authCancel').onclick = function(){ bg.remove(); };
+    document.getElementById('authOk').onclick = function(){
+      var p = document.getElementById('authPass').value;
+      var q = document.getElementById('authQ').value.trim().toLowerCase();
+      var pet = document.getElementById('authPet').value.trim().toLowerCase();
+      var pin = document.getElementById('authPin').value.trim();
+      if(p === CODE_PASS && q === CODE_ANSWER && pet === CODE_PET && pin === CODE_PIN){
+        bg.remove();
+        enterEdit();
+      } else {
+        document.getElementById('authErr').textContent = 'Algo no coincide 🗿';
+      }
+    };
+  }
+
+  function enterEdit(){
+    document.body.classList.add('editing');
+    document.querySelectorAll('.editable').forEach(function(el){ el.setAttribute('contenteditable','true'); });
+    toast('Modo edición activado');
+  }
+  function exitEdit(){
+    document.body.classList.remove('editing');
+    document.querySelectorAll('.editable').forEach(function(el){ el.setAttribute('contenteditable','false'); });
+  }
+
+  document.getElementById('exitBtn').onclick = function(){
+    if(confirm('¿Salir sin guardar los cambios?')) location.reload();
+  };
+
+  document.querySelectorAll('.add-card').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = btn.dataset.target;
+      if(target === 'musiclist'){
+        var list = document.querySelector('[data-cat="musiclist"]');
+        var row = document.createElement('div');
+        row.className = 'music-row';
+        var n = list.children.length + 1;
+        row.innerHTML = '<button class="rm-card edit-only" aria-label="Eliminar">×</button>' +
+          '<span class="n">' + String(n).padStart(2,'0') + '</span>' +
+          '<div class="t"><b class="editable" contenteditable="true">Nuevo track</b><span class="editable" contenteditable="true">Género · duración</span></div>';
+        list.appendChild(row);
+        row.querySelector('.rm-card').addEventListener('click', function(){ row.remove(); });
+      } else {
+        var grid = document.querySelector('.grid[data-cat="'+target+'"]');
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = '<button class="rm-card edit-only" aria-label="Eliminar">×</button>' +
+          '<h3 class="editable" contenteditable="true">Nuevo proyecto</h3>' +
+          '<p class="editable" contenteditable="true">Descripción</p>' +
+          '<span class="meta editable" contenteditable="true">2026</span>';
+        grid.appendChild(card);
+        card.querySelector('.rm-card').addEventListener('click', function(){ card.remove(); });
+      }
+    });
+  });
+
+  document.querySelectorAll('.rm-card').forEach(function(btn){
+    btn.addEventListener('click', function(){ btn.parentElement.remove(); });
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', async function(){
+    var token = getToken();
+    if(!token){
+      token = prompt('Pegá tu token personal de GitHub (permiso Contents: Read and write):');
+      if(!token) return;
+      setToken(token);
+    }
+    var clone = document.documentElement.cloneNode(true);
+    clone.querySelector('body').classList.remove('editing');
+    clone.querySelectorAll('.editable').forEach(function(el){ el.setAttribute('contenteditable','false'); });
+    clone.querySelectorAll('.modal-bg').forEach(function(el){ el.remove(); });
+    var outHtml = '<!DOCTYPE html>\n' + clone.outerHTML;
+    try{
+      var getRes = await fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH+'?ref='+GH_BRANCH, {
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
+      });
+      if(!getRes.ok) throw new Error('No se pudo leer el archivo actual (' + getRes.status + ')');
+      var getData = await getRes.json();
+      var b64 = btoa(unescape(encodeURIComponent(outHtml)));
+      var putRes = await fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/contents/'+GH_PATH, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Actualizar portafolio', content: b64, sha: getData.sha, branch: GH_BRANCH })
+      });
+      if(!putRes.ok){
+        var errData = await putRes.json().catch(function(){ return {}; });
+        throw new Error(errData.message || ('Error ' + putRes.status));
+      }
+      toast('¡Guardado! Puede tardar ~1 min en verse.');
+      setTimeout(exitEdit, 600);
+    }catch(e){
+      toast('No se pudo guardar: ' + e.message);
+      setToken('');
+    }
+  });
+
+  document.getElementById('tokenBtn').addEventListener('click', function(){
+    setToken('');
+    toast('Token borrado — se te va a pedir de nuevo al guardar.');
+  });
+})();
+</script>
+
+
+
+</body></html>
